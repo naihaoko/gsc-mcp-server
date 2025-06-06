@@ -1441,55 +1441,6 @@ async def manage_sitemaps(site_url: str, action: str, sitemap_url: str = None, s
     except Exception as e:
         return f"Error managing sitemaps: {str(e)}"
 
-@mcp.tool()
-async def fetch_web_page_content(url: str) -> dict:
-    """
-    Fetches the content of a given URL.
-
-    Args:
-        url: The URL of the web page to fetch.
-
-    Returns:
-        A dictionary containing the status_code, content (HTML), and error (if any).
-    """
-    try:
-        async with httpx.AsyncClient() as client:
-            response = await client.get(url, follow_redirects=True, timeout=10.0)
-        
-        if 200 <= response.status_code < 300:
-            return {
-                "status_code": response.status_code,
-                "content": response.text,
-                "url": str(response.url), # Actual URL after redirects
-                "error": None
-            }
-        else:
-            return {
-                "status_code": response.status_code,
-                "content": response.text, # Include content even on error for debugging
-                "url": str(response.url),
-                "error": f"HTTP status code {response.status_code}: {response.reason_phrase}"
-            }
-    except httpx.RequestError as e:
-        return {
-            "status_code": None,
-            "content": None,
-            "url": url,
-            "error": f"Request failed: {str(e)}"
-        }
-    except Exception as e:
-        return {
-            "status_code": None,
-            "content": None,
-            "url": url,
-            "error": f"An unexpected error occurred: {str(e)}"
-        }
-
-@mcp.tool()
-async def get_current_server_time() -> str:
-    """Returns the current date and time from the server where the tools are running."""
-    return f"The current server date and time is: {datetime.now().strftime('%Y-%m-%d %H:%M:%S %Z')}"
-
 if __name__ == "__main__":
     # Print server startup information
     print("\n" + "="*50)
