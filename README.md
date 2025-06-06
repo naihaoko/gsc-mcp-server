@@ -1,5 +1,7 @@
 # Google Search Console MCP Server
 
+> This project is a fork of [mcp-gsc](https://github.com/AminForou/mcp-gsc) by [Amin Foroutan](https://github.com/AminForou). Special thanks to the original author for creating this amazing tool.
+
 一個將 [Google Search Console](https://search.google.com/search-console/about)（GSC）與 Claude AI Desktop 串接的工具，讓你能夠透過自然語言對話分析你的 SEO 數據。這個整合讓你可以存取資產資訊、關鍵字分析、網址檢查與網站地圖管理——全部都能透過與 Claude 的簡單聊天完成。
 
 ---
