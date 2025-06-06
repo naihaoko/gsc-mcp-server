@@ -127,7 +127,7 @@
 或如熟悉 Git：
 
 ```bash
-git clone https://github.com/AminForou/mcp-gsc.git
+git clone https://github.com/naihaoko/gsc-mcp-server.git
 ```
 
 ### 4. 安裝必要元件
@@ -137,7 +137,7 @@ git clone https://github.com/AminForou/mcp-gsc.git
 1. 切換到解壓縮後的資料夾：
    ```bash
    # 範例（請依實際路徑調整）
-   cd ~/Documents/mcp-gsc-main
+   cd ~/Documents/gsc-mcp-server
    ```
 
 2. 建立虛擬環境（讓專案依賴獨立）：
@@ -211,8 +211,8 @@ git clone https://github.com/AminForou/mcp-gsc.git
    {
      "mcpServers": {
        "gscServer": {
-         "command": "/FULL/PATH/TO/mcp-gsc/.venv/bin/python",
-         "args": ["/FULL/PATH/TO/mcp-gsc/gsc_server.py"],
+         "command": "/FULL/PATH/TO/gsc-mcp-server/.venv/bin/python",
+         "args": ["/FULL/PATH/TO/gsc-mcp-server/gsc_server.py"],
          "env": {
            "GSC_OAUTH_CLIENT_SECRETS_FILE": "/FULL/PATH/TO/client_secrets.json"
          }
@@ -228,7 +228,7 @@ git clone https://github.com/AminForou/mcp-gsc.git
      "mcpServers": {
        "gscServer": {
          "command": "/FULL/PATH/TO/-main/.venv/bin/python",
-         "args": ["/FULL/PATH/TO/mcp-gsc-main/gsc_server.py"],
+         "args": ["/FULL/PATH/TO/gsc-mcp-server/gsc_server.py"],
          "env": {
            "GSC_CREDENTIALS_PATH": "/FULL/PATH/TO/service_account_credentials.json",
            "GSC_SKIP_OAUTH": "true"
@@ -245,11 +245,11 @@ git clone https://github.com/AminForou/mcp-gsc.git
    
    範例：
    - Mac：
-     - Python 路徑：`/Users/yourname/Documents/mcp-gsc/.venv/bin/python`
-     - 腳本路徑：`/Users/yourname/Documents/mcp-gsc/gsc_server.py`
+     - Python 路徑：`/Users/yourname/Documents/gsc-mcp-server/.venv/bin/python`
+     - 腳本路徑：`/Users/yourname/Documents/gsc-mcp-server/gsc_server.py`
    - Windows：
-     - Python 路徑：`C:\\Users\\yourname\\Documents\\mcp-gsc\\.venv\\Scripts\\python.exe`
-     - 腳本路徑：`C:\\Users\\yourname\\Documents\\mcp-gsc\\gsc_server.py`
+     - Python 路徑：`C:\\Users\\yourname\\Documents\\gsc-mcp-server\\.venv\\Scripts\\python.exe`
+     - 腳本路徑：`C:\\Users\\yourname\\Documents\\gsc-mcp-server\\gsc_server.py`
 
 5. 儲存檔案：
    - Mac：按 Ctrl+O，然後 Enter，再按 Ctrl+X 離開
