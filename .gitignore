@@ -50,3 +50,10 @@ site/
 
 # Logs
 *.log
+
+# Claude desktop config
+# claude_desktop_config.json (usually outside project, never commit)
+
+# Sensitive credentials (do not commit)
+client_secret.json
+service_account_credentials.json

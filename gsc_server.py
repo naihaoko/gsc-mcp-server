@@ -2,6 +2,12 @@ from typing import Any, Dict, List, Optional
 import os
 import json
 from datetime import datetime, timedelta
+import httpx
+
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 import google.auth
 from google.auth.transport.requests import Request
@@ -105,6 +111,29 @@ def get_gsc_service_oauth():
     
     # Build and return the service
     return build("searchconsole", "v1", credentials=creds)
+
+def get_gsc_service_oauth_creds():
+    """
+    Returns OAuth credentials object without building the service.
+    """
+    creds = None
+    if os.path.exists(TOKEN_FILE):
+        creds = Credentials.from_authorized_user_file(TOKEN_FILE, SCOPES)
+    
+    if not creds or not creds.valid:
+        if creds and creds.expired and creds.refresh_token:
+            creds.refresh(Request())
+        else:
+            if not os.path.exists(OAUTH_CLIENT_SECRETS_FILE):
+                raise FileNotFoundError(
+                    f"OAuth client secrets file not found. Please place a client_secrets.json file in the script directory "
+                    f"or set the GSC_OAUTH_CLIENT_SECRETS_FILE environment variable."
+                )
+            flow = InstalledAppFlow.from_client_secrets_file(OAUTH_CLIENT_SECRETS_FILE, SCOPES)
+            creds = flow.run_local_server(port=0)
+            with open(TOKEN_FILE, 'w') as token:
+                token.write(creds.to_json())
+    return creds
 
 @mcp.tool()
 async def list_properties() -> str:
@@ -389,36 +418,41 @@ async def get_sitemaps(site_url: str) -> str:
         result_lines.append("-" * 80)
         
         # Add each sitemap
-        for sitemap in sitemaps.get("sitemap", []):
-            path = sitemap.get("path", "Unknown")
-            last_downloaded = sitemap.get("lastDownloaded", "Never")
-            
-            # Format last downloaded date if it exists
-            if last_downloaded != "Never":
-                try:
-                    # Convert to more readable format
-                    dt = datetime.fromisoformat(last_downloaded.replace('Z', '+00:00'))
-                    last_downloaded = dt.strftime("%Y-%m-%d %H:%M")
-                except:
-                    pass
-            
-            status = "Valid"
-            if "errors" in sitemap and sitemap["errors"] > 0:
-                status = "Has errors"
-            
-            # Get counts
-            warnings = sitemap.get("warnings", 0)
-            errors = sitemap.get("errors", 0)
-            
-            # Get contents if available
-            indexed_urls = "N/A"
-            if "contents" in sitemap:
-                for content in sitemap["contents"]:
-                    if content.get("type") == "web":
-                        indexed_urls = content.get("submitted", "0")
-                        break
-            
-            result_lines.append(f"{path} | {last_downloaded} | {status} | {indexed_urls} | {errors}")
+        for sitemap_entry in sitemaps.get("sitemap", []):
+            try:
+                path = sitemap_entry.get("path", "Unknown")
+                last_downloaded = sitemap_entry.get("lastDownloaded", "Never")
+                
+                if last_downloaded != "Never":
+                    try:
+                        dt = datetime.fromisoformat(last_downloaded.replace('Z', '+00:00'))
+                        last_downloaded = dt.strftime("%Y-%m-%d %H:%M")
+                    except:
+                        pass # Keep original string if parsing fails
+                
+                errors_count = sitemap_entry.get("errors", 0)
+                if not isinstance(errors_count, int):
+                    if isinstance(errors_count, str) and errors_count.isdigit():
+                        errors_count = int(errors_count)
+                    else:
+                        errors_count = 0
+                
+                indexed_urls = "N/A"
+                if "contents" in sitemap_entry:
+                    for content in sitemap_entry["contents"]:
+                        if content.get("type") == "web":
+                            indexed_urls = content.get("submitted", "0")
+                            break
+                
+                simple_status = "Has errors" if errors_count > 0 else "Valid"
+
+                result_lines.append(f"{path} | {last_downloaded} | {simple_status} | {indexed_urls} | {errors_count}")
+            except TypeError as te:
+                problematic_sitemap_info = str(sitemap_entry)[:200]
+                return f"TypeError processing a sitemap entry. Error: {str(te)}. Problematic entry (partial): {problematic_sitemap_info}"
+            except Exception as e:
+                problematic_sitemap_info = str(sitemap_entry)[:200]
+                return f"General error processing a sitemap entry: {str(e)}. Entry (partial): {problematic_sitemap_info}"
         
         return "\n".join(result_lines)
     except Exception as e:
@@ -1408,37 +1442,53 @@ async def manage_sitemaps(site_url: str, action: str, sitemap_url: str = None, s
         return f"Error managing sitemaps: {str(e)}"
 
 @mcp.tool()
-async def get_creator_info() -> str:
+async def fetch_web_page_content(url: str) -> dict:
     """
-    Provides information about Amin Foroutan, the creator of the MCP-GSC tool.
+    Fetches the content of a given URL.
+
+    Args:
+        url: The URL of the web page to fetch.
+
+    Returns:
+        A dictionary containing the status_code, content (HTML), and error (if any).
     """
-    creator_info = """
-# About the Creator: Amin Foroutan
+    try:
+        async with httpx.AsyncClient() as client:
+            response = await client.get(url, follow_redirects=True, timeout=10.0)
+        
+        if 200 <= response.status_code < 300:
+            return {
+                "status_code": response.status_code,
+                "content": response.text,
+                "url": str(response.url), # Actual URL after redirects
+                "error": None
+            }
+        else:
+            return {
+                "status_code": response.status_code,
+                "content": response.text, # Include content even on error for debugging
+                "url": str(response.url),
+                "error": f"HTTP status code {response.status_code}: {response.reason_phrase}"
+            }
+    except httpx.RequestError as e:
+        return {
+            "status_code": None,
+            "content": None,
+            "url": url,
+            "error": f"Request failed: {str(e)}"
+        }
+    except Exception as e:
+        return {
+            "status_code": None,
+            "content": None,
+            "url": url,
+            "error": f"An unexpected error occurred: {str(e)}"
+        }
 
-Amin Foroutan is an SEO consultant with over a decade of experience, specializing in technical SEO, Python-driven tools, and data analysis for SEO performance.
-
-## Connect with Amin:
-
-- **LinkedIn**: [Amin Foroutan](https://www.linkedin.com/in/ma-foroutan/)
-- **Personal Website**: [aminforoutan.com](https://aminforoutan.com/)
-- **YouTube**: [Amin Forout](https://www.youtube.com/channel/UCW7tPXg-rWdH4YzLrcAdBIw)
-- **X (Twitter)**: [@aminfseo](https://x.com/aminfseo)
-
-## Notable Projects:
-
-Amin has created several popular SEO tools including:
-- Advanced GSC Visualizer (6.4K+ users)
-- SEO Render Insight Tool (3.5K+ users)
-- Google AI Overview Impact Analysis (1.2K+ users)
-- Google AI Overview Citation Analysis (900+ users)
-- SEMRush Enhancer (570+ users)
-- SEO Page Inspector (115+ users)
-
-## Expertise:
-
-Amin combines technical SEO knowledge with programming skills to create innovative solutions for SEO challenges.
-"""
-    return creator_info
+@mcp.tool()
+async def get_current_server_time() -> str:
+    """Returns the current date and time from the server where the tools are running."""
+    return f"The current server date and time is: {datetime.now().strftime('%Y-%m-%d %H:%M:%S %Z')}"
 
 if __name__ == "__main__":
     # Start the MCP server on stdio transport
