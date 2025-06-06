@@ -1,226 +1,218 @@
-# Google Search Console MCP server for SEOs
+# Google Search Console MCP Server
 
-A tool that connects [Google Search Console](https://search.google.com/search-console/about) (GSC) with Claude AI, allowing you to analyze your SEO data through natural language conversations. This integration gives you access to property information, search analytics, URL inspection, and sitemap management—all through simple chat with Claude.
-
----
-
-## What Can This Tool Do For SEO Professionals?
-
-1. **Property Management**  
-   - See all your GSC properties in one place
-   - Get verification details and basic site information
-   - Add new properties to your account
-   - Remove properties from your account
-
-2. **Search Analytics & Reporting**  
-   - Discover which search queries bring visitors to your site
-   - Track impressions, clicks, and click-through rates
-   - Analyze performance trends over time
-   - Compare different time periods to spot changes
-   - **Visualize your data** with charts and graphs created by Claude
-
-3. **URL Inspection & Indexing**  
-   - Check if specific pages have indexing problems
-   - See when Google last crawled your pages
-   - Inspect multiple URLs at once to identify patterns
-   - Get actionable insights on how to improve indexing
-
-4. **Sitemap Management**  
-   - View all your sitemaps and their status
-   - Submit new sitemaps directly through Claude
-   - Check for errors or warnings in your sitemaps
-   - Monitor sitemap processing status
+一個將 [Google Search Console](https://search.google.com/search-console/about)（GSC）與 Claude AI Desktop 串接的工具，讓你能夠透過自然語言對話分析你的 SEO 數據。這個整合讓你可以存取資產資訊、關鍵字分析、網址檢查與網站地圖管理——全部都能透過與 Claude 的簡單聊天完成。
 
 ---
 
-## Available Tools
+## 這個工具能為 SEO 專業人士做什麼？
 
-Here's what you can ask Claude to do once you've set up this integration:
+1. **資產管理**  
+   - 一次查看所有 GSC 資產
+   - 取得驗證細節與基本網站資訊
+   - 新增網站到你的帳戶
+   - 從帳戶中移除網站
 
-| **What You Can Ask For**        | **What It Does**                                            | **What You'll Need to Provide**                                 |
-|---------------------------------|-------------------------------------------------------------|----------------------------------------------------------------|
-| `list_properties`               | Shows all your GSC properties                               | Nothing - just ask!                                             |
-| `get_site_details`              | Shows details about a specific site                         | Your website URL                                                |
-| `add_site`                      | Adds a new site to your GSC properties                      | Your website URL                                                |
-| `delete_site`                   | Removes a site from your GSC properties                     | Your website URL                                                |
-| `get_search_analytics`          | Shows top queries and pages with metrics                    | Your website URL and time period                                |
-| `get_performance_overview`      | Gives a summary of site performance                         | Your website URL and time period                                |
-| `check_indexing_issues`         | Checks if pages have indexing problems                      | Your website URL and list of pages to check                     |
-| `inspect_url_enhanced`          | Detailed inspection of a specific URL                       | Your website URL and the page to inspect                        |
-| `get_sitemaps`                  | Lists all sitemaps for your site                            | Your website URL                                                |
-| `submit_sitemap`                | Submits a new sitemap to Google                             | Your website URL and sitemap URL                                |
+2. **搜尋分析與報告**  
+   - 發現哪些搜尋帶來訪客
+   - 追蹤曝光次數、點擊數與點擊率
+   - 分析一段時間內的表現趨勢
+   - 比較不同時期以發現變化
+   - **用圖表視覺化你的數據**，由 Claude 產生
 
-*For a complete list of all 19 available tools and their detailed descriptions, ask Claude to "list tools" after setup.*
+3. **網址檢查與索引**  
+   - 檢查特定頁面是否有索引問題
+   - 查看 Google 上次抓取頁面的時間
+   - 一次檢查多個網址
+   - 取得可行的建議以改善索引狀況
+
+4. **網站地圖管理**  
+   - 查看所有網站地圖及其狀態
+   - 直接透過 Claude 提交新網站地圖
+   - 檢查網站地圖中的錯誤或警告
+   - 監控網站地圖處理狀態
 
 ---
 
-## Getting Started (No Coding Experience Required!)
+## 可用工具
 
-### 1. Set Up Google Search Console API Access
+以下是你在完成整合後可以請 Claude 執行的操作：
 
-Before using this tool, you'll need to create API credentials that allow Claude to access your GSC data:
+| **你可以要求什麼**        | **它會做什麼**                                            | **你需要提供什麼**                                 |
+|----------------------------|-----------------------------------------------------------|----------------------------------------------------|
+| `list_properties`          | 顯示所有 GSC 資產                                         | 無需提供任何資訊                                   |
+| `get_site_details`         | 顯示特定網站的詳細資訊                                   | 你的網站網址                                       |
+| `add_site`                 | 新增網站到你的 GSC 資產                                   | 你的網站網址                                       |
+| `delete_site`              | 從你的 GSC 資產中移除網站                                 | 你的網站網址                                       |
+| `get_search_analytics`     | 顯示帶有指標的熱門查詢與頁面                             | 你的網站網址與時間區間                             |
+| `get_performance_overview` | 提供網站表現摘要                                         | 你的網站網址與時間區間                             |
+| `check_indexing_issues`    | 檢查頁面是否有索引問題                                   | 你的網站網址與要檢查的頁面清單                     |
+| `inspect_url_enhanced`     | 詳細檢查特定網址                                         | 你的網站網址與要檢查的頁面                         |
+| `get_sitemaps`             | 列出你網站的所有網站地圖                                 | 你的網站網址                                       |
+| `submit_sitemap`           | 向 Google 提交新網站地圖                                 | 你的網站網址與網站地圖網址                         |
 
-#### Authentication Options
+*如需完整 19 項可用工具及詳細說明，請在設定完成後請 Claude「list tools」。*
 
-The tool supports two authentication methods:
+---
 
-##### 1. OAuth Authentication (Recommended)
+## 快速開始（不需程式經驗！）
 
-This method allows you to authenticate with your own Google account, which is often more convenient than using a service account. It will have access to the same resources you normally do.
+### 1. 設定 Google Search Console API 存取
 
-Set `GSC_SKIP_OAUTH` to "true", "1", or "yes" to skip OAuth authentication and use only service account authentication
+在使用本工具前，你需要建立 API 憑證，讓 Claude 能存取你的 GSC 數據：
 
-###### Setup Instructions:
+#### 驗證方式
 
-1. Go to the [Google Cloud Console](https://console.cloud.google.com/) and create a Google Cloud account if you don't have one
-2. Create a new project or select an existing one
-3. [Enable the Search Console API](https://console.cloud.google.com/apis/library/searchconsole.googleapis.com) for your project
-4. [Add scope](https://console.cloud.google.com/auth/scopes) `https://www.googleapis.com/auth/webmasters` to your project
-5. Go to the ["Credentials" page](https://console.cloud.google.com/apis/credentials)
-6. Click "Create Credentials" and select "OAuth client ID"
-7. Configure the OAuth consent screen
-8. For application type, select "Desktop app"
-9. Give your OAuth client a name and click "Create"
-10. Download the client secrets JSON file (it will be named something like `client_secrets.json`)
-11. Place this file in the same directory as the script or set the `GSC_OAUTH_CLIENT_SECRETS_FILE` environment variable to point to its location
+本工具支援兩種驗證方式：
 
-When you run the tool for the first time with OAuth authentication, it will open a browser window asking you to sign in to your Google account and authorize the application. After authorization, the tool will save the token for future use.
+##### 1. OAuth 驗證（推薦）
 
-##### 2. Service Account Authentication
+此方式讓你用自己的 Google 帳號驗證，通常比服務帳號更方便。它將能存取你平常可用的資源。
 
-This method uses a service account, which is useful for automated scripts or when you don't want to use your personal Google account. This requires adding the service account as a user in Google Search Console.
+將 `GSC_SKIP_OAUTH` 設為 "true"、"1" 或 "yes" 可跳過 OAuth 驗證，僅使用服務帳號驗證。
 
-###### Setup Instructions:
+###### 設定步驟：
 
-1. Go to the [Google Cloud Console](https://console.cloud.google.com/) and create a Google Cloud account if you don't have one
-2. Create a new project or select an existing one
-3. [Enable the Search Console API](https://console.cloud.google.com/apis/library/searchconsole.googleapis.com) for your project
-4. Go to the ["Credentials" page](https://console.cloud.google.com/apis/credentials)
-5. Click "Create Credentials" and select "Service Account"
-6. Fill in the service account details and click "Create"
-7. Click on the newly created service account
-8. Go to the "Keys" tab and click "Add Key" > "Create new key"
-9. Select JSON format and click "Create"
-10. Download the key file and save it as `service_account_credentials.json` in the same directory as the script or set the `GSC_CREDENTIALS_PATH` environment variable to point to its location
-11. Add your service account email address to appropriate Search Console properties
+1. 前往 [Google Cloud Console](https://console.cloud.google.com/) 並建立 Google Cloud 帳號（如尚未擁有）
+2. 建立新專案或選擇現有專案
+3. [啟用 Search Console API](https://console.cloud.google.com/apis/library/searchconsole.googleapis.com)
+4. [新增範圍](https://console.cloud.google.com/auth/scopes) `https://www.googleapis.com/auth/webmasters` 到你的專案
+5. 前往[「憑證」頁面](https://console.cloud.google.com/apis/credentials)
+6. 點選「建立憑證」並選擇「OAuth 用戶端 ID」
+7. 設定 OAuth 同意畫面
+8. 應用程式類型選「桌面應用程式」
+9. 給你的 OAuth 用戶端命名並點選「建立」
+10. 下載 client secrets JSON 檔（檔名類似 `client_secrets.json`）
+11. 將此檔案放在腳本同目錄下，或設定 `GSC_OAUTH_CLIENT_SECRETS_FILE` 環境變數指向其位置
 
-**🎬 Watch this beginner-friendly tutorial on Youtube:**
+首次以 OAuth 驗證執行工具時，會開啟瀏覽器要求你登入 Google 帳號並授權應用程式。授權後，工具會儲存 token 以供日後使用。
 
-<div align="center">
-  <a href="https://youtu.be/PCWsK5BgSd0">
-    <img src="https://i.ytimg.com/vi/PCWsK5BgSd0/maxresdefault.jpg" alt="Google Search Console API Setup Tutorial" width="600" style="margin: 20px 0; border-radius: 8px;">
-  </a>
-</div>
+##### 2. 服務帳號驗證
 
-*Click the image above to watch the step-by-step video tutorial*
+此方式使用服務帳號，適合自動化腳本或不想用個人帳號時。需將服務帳號加入 GSC。
 
-### 2. Install Required Software
+###### 設定步驟：
 
-You'll need to install these tools on your computer:
+1. 前往 [Google Cloud Console](https://console.cloud.google.com/) 並建立 Google Cloud 帳號（如尚未擁有）
+2. 建立新專案或選擇現有專案
+3. [啟用 Search Console API](https://console.cloud.google.com/apis/library/searchconsole.googleapis.com)
+4. 前往[「憑證」頁面](https://console.cloud.google.com/apis/credentials)
+5. 點選「建立憑證」並選擇「服務帳號」
+6. 填寫服務帳號細節並點選「建立」
+7. 點選新建立的服務帳號
+8. 前往「金鑰」分頁並點選「新增金鑰」>「建立新金鑰」
+9. 選擇 JSON 格式並點選「建立」
+10. 下載金鑰檔並儲存為 `service_account_credentials.json`，放在腳本同目錄下，或設定 `GSC_CREDENTIALS_PATH` 環境變數指向其位置
+11. 將服務帳號 email 加入對應的 Search Console 資產
 
-- [Python](https://www.python.org/downloads/) (version 3.11 or newer) - This runs the connection between GSC and Claude
-- [Node.js](https://nodejs.org/en) - Required for running the MCP inspector and certain MCP components
-- [Claude Desktop](https://claude.ai/download) - The AI assistant you'll chat with
+*點擊上方圖片觀看逐步教學影片*
 
-Make sure both Python and Node.js are properly installed and available in your system path before proceeding.
+### 2. 安裝所需軟體
 
-### 3. Download the Google Search Console MCP 
+你需要在電腦上安裝以下工具：
 
-You need to download this tool to your computer. The easiest way is:
+- [Python](https://www.python.org/downloads/)（3.11 或更新版）- 執行 GSC 與 Claude 連線
+- [Node.js](https://nodejs.org/en) - 執行 MCP 檢查器及部分 MCP 元件
+- [Claude Desktop](https://claude.ai/download) - 你將與之對話的 AI 助手
 
-1. Click the green "Code" button at the top of this page
-2. Select "Download ZIP"
-3. Unzip the downloaded file to a location you can easily find (like your Documents folder)
+請確保 Python 與 Node.js 已正確安裝並加入系統路徑。
 
-Alternatively, if you're familiar with Git:
+### 3. 下載 Google Search Console MCP
+
+你需要將本工具下載到電腦。最簡單方式：
+
+1. 點選本頁上方綠色「Code」按鈕
+2. 選擇「Download ZIP」
+3. 解壓縮檔案到你容易找到的位置（如 Documents 資料夾）
+
+或如熟悉 Git：
 
 ```bash
 git clone https://github.com/AminForou/mcp-gsc.git
 ```
 
-### 4. Install Required Components
+### 4. 安裝必要元件
 
-Open your computer's Terminal (Mac) or Command Prompt (Windows):
+打開終端機（Mac）或命令提示字元（Windows）：
 
-1. Navigate to the folder where you unzipped the files:
+1. 切換到解壓縮後的資料夾：
    ```bash
-   # Example (replace with your actual path):
+   # 範例（請依實際路徑調整）
    cd ~/Documents/mcp-gsc-main
    ```
 
-2. Create a virtual environment (this keeps the project dependencies isolated):
+2. 建立虛擬環境（讓專案依賴獨立）：
    ```bash
-   # Using uv (recommended):
+   # 使用 uv（推薦）：
    uv venv .venv
    
-   # If uv is not installed, install it first:
+   # 若未安裝 uv，先安裝：
    pip install uv
-   # Then create the virtual environment:
+   # 再建立虛擬環境：
    uv venv .venv
 
-   # OR using standard Python:
+   # 或用標準 Python：
    python -m venv .venv
    ```
 
-   **Note:** If you get a "pip not found" error when trying to install uv, see the "If you get 'pip not found' error" section below.
+   **注意：** 若安裝 uv 或 pip 時出現「pip not found」錯誤，請見下方說明。
 
-3. Activate the virtual environment:
+3. 啟動虛擬環境：
    ```bash
-   # On Mac/Linux:
+   # Mac/Linux：
    source .venv/bin/activate
    
-   # On Windows:
+   # Windows：
    .venv\Scripts\activate
    ```
 
-4. Install the required dependencies:
+4. 安裝所需依賴：
    ```bash
-   # Using uv:
+   # 使用 uv：
    uv pip install -r requirements.txt
 
-   # OR using standard pip:
+   # 或用標準 pip：
    pip install -r requirements.txt
    ```
 
-   **If you get "pip not found" error:**
+   **若出現「pip not found」錯誤：**
    ```bash
-   # First ensure pip is installed and updated:
+   # 先確保 pip 已安裝並升級：
    python3 -m ensurepip --upgrade
    python3 -m pip install --upgrade pip
    
-   # Then try installing the requirements again:
+   # 再嘗試安裝依賴：
    python3 -m pip install -r requirements.txt
    
-   # Or to install uv:
+   # 或安裝 uv：
    python3 -m pip install uv
    ```
 
-When you see `(.venv)` at the beginning of your command prompt, it means the virtual environment is active and the dependencies will be installed there without affecting your system Python installation.
+看到命令提示符前有 `(.venv)`，代表虛擬環境已啟動，依賴會安裝在這裡，不會影響系統 Python。
 
-### 5. Connect Claude to Google Search Console
+### 5. 連接 Claude 與 Google Search Console
 
-1. Download and install [Claude Desktop](https://claude.ai/download) if you haven't already
-2. Make sure you have your Google service account credentials file saved somewhere on your computer
-3. Open your computer's Terminal (Mac) or Command Prompt (Windows) and type:
+1. 下載並安裝 [Claude Desktop](https://claude.ai/download)（如尚未安裝）
+2. 準備好你的 Google 服務帳號憑證檔
+3. 打開終端機（Mac）或命令提示字元（Windows），輸入：
 
 ```bash
-   # For Mac users:
+   # Mac 用戶：
    nano ~/Library/Application\ Support/Claude/claude_desktop_config.json
    
-   # For Windows users:
+   # Windows 用戶：
    notepad %APPDATA%\Claude\claude_desktop_config.json
-   ```
+```
 
-4. Add the following configuration text (this tells Claude how to connect to GSC):
+4. 加入以下設定（告訴 Claude 如何連接 GSC）：
 
-#### OAuth authentication (using your own account)
+#### OAuth 驗證（用你自己的帳號）
 
    ```json
    {
      "mcpServers": {
        "gscServer": {
-         "command": "/FULL/PATH/TO/-main/.venv/bin/python",
-         "args": ["/FULL/PATH/TO/mcp-gsc-main/gsc_server.py"],
+         "command": "/FULL/PATH/TO/mcp-gsc/.venv/bin/python",
+         "args": ["/FULL/PATH/TO/mcp-gsc/gsc_server.py"],
          "env": {
            "GSC_OAUTH_CLIENT_SECRETS_FILE": "/FULL/PATH/TO/client_secrets.json"
          }
@@ -229,7 +221,7 @@ When you see `(.venv)` at the beginning of your command prompt, it means the vir
    }
    ```
 
-#### Service account authentication
+#### Service Account驗證
 
    ```json
    {
@@ -246,136 +238,126 @@ When you see `(.venv)` at the beginning of your command prompt, it means the vir
    }
    ```
 
-   **Important:** Replace all paths with the actual locations on your computer:
+   **重要：** 請將所有路徑替換為你電腦上的實際位置：
+   - 第一個路徑指向虛擬環境內的 Python 執行檔
+   - 第二個路徑指向解壓縮資料夾內的 `gsc_server.py`
+   - 第三個路徑指向你的 Google 服務帳號憑證 JSON 檔
    
-   - The first path should point to the Python executable inside your virtual environment
-   - The second path should point to the `gsc_server.py` file inside the folder you unzipped
-   - The third path should point to your Google service account credentials JSON file
-   
-   Examples:
-   - Mac: 
-     - Python path: `/Users/yourname/Documents/mcp-gsc/.venv/bin/python`
-     - Script path: `/Users/yourname/Documents/mcp-gsc/gsc_server.py`
-   - Windows: 
-     - Python path: `C:\\Users\\yourname\\Documents\\mcp-gsc\\.venv\\Scripts\\python.exe`
-     - Script path: `C:\\Users\\yourname\\Documents\\mcp-gsc\\gsc_server.py`
+   範例：
+   - Mac：
+     - Python 路徑：`/Users/yourname/Documents/mcp-gsc/.venv/bin/python`
+     - 腳本路徑：`/Users/yourname/Documents/mcp-gsc/gsc_server.py`
+   - Windows：
+     - Python 路徑：`C:\\Users\\yourname\\Documents\\mcp-gsc\\.venv\\Scripts\\python.exe`
+     - 腳本路徑：`C:\\Users\\yourname\\Documents\\mcp-gsc\\gsc_server.py`
 
-5. Save the file:
-   - Mac: Press Ctrl+O, then Enter, then Ctrl+X to exit
-   - Windows: Click File > Save, then close Notepad
+5. 儲存檔案：
+   - Mac：按 Ctrl+O，然後 Enter，再按 Ctrl+X 離開
+   - Windows：點選「檔案 > 儲存」，然後關閉 Notepad
 
-6. Restart Claude Desktop
-7. When Claude opens, you should now see GSC tools available in the tools section
+6. 重新啟動 Claude Desktop
+7. 開啟 Claude 後，應可在工具區看到 GSC 工具
 
-### 6. Start Analyzing Your SEO Data!
+### 6. 開始分析你的 SEO 數據！
 
-Now you can ask Claude questions about your GSC data! Claude can not only retrieve the data but also analyze it, explain trends, and create visualizations to help you understand your SEO performance better.
+現在你可以請 Claude 查詢你的 GSC 數據！Claude 不僅能取得資料，還能分析、解釋趨勢，並產生視覺化圖表協助你理解 SEO 表現。
 
-Here are some powerful prompts you can use with each tool:
+以下是每個工具的強大範例提示：
 
-| **Tool Name**                   | **Sample Prompt**                                                                                |
-|---------------------------------|--------------------------------------------------------------------------------------------------|
-| `list_properties`               | "List all my GSC properties and tell me which ones have the most pages indexed."                 |
-| `get_site_details`              | "Analyze the verification status of mywebsite.com and explain what the ownership details mean."  |
-| `add_site`                      | "Add my new website https://mywebsite.com to Search Console and verify its status."              |
-| `delete_site`                   | "Remove the old test site https://test.mywebsite.com from Search Console."                       |
-| `get_search_analytics`          | "Show me the top 20 search queries for mywebsite.com in the last 30 days, highlight any with CTR below 2%, and suggest title improvements." |
-| `get_performance_overview`      | "Create a visual performance overview of mywebsite.com for the last 28 days, identify any unusual drops or spikes, and explain possible causes." |
-| `check_indexing_issues`         | "Check these important pages for indexing issues and prioritize which ones need immediate attention: mywebsite.com/product, mywebsite.com/services, mywebsite.com/about" |
-| `inspect_url_enhanced`          | "Do a comprehensive inspection of mywebsite.com/landing-page and give me actionable recommendations to improve its indexing status." |
-| `batch_url_inspection`          | "Inspect my top 5 product pages, identify common crawling or indexing patterns, and suggest technical SEO improvements." |
-| `get_sitemaps`                  | "List all sitemaps for mywebsite.com, identify any with errors, and recommend next steps." |
-| `list_sitemaps_enhanced`        | "Analyze all my sitemaps for mywebsite.com, focusing on error patterns, and create a prioritized action plan." |
-| `submit_sitemap`                | "Submit my new product sitemap at https://mywebsite.com/product-sitemap.xml and explain how long it typically takes for Google to process it." |
-| `get_sitemap_details`           | "Check the status of my main sitemap at mywebsite.com/sitemap.xml and explain what the warnings mean for my SEO." |
-| `get_search_by_page_query`      | "What search terms are driving traffic to my blog post at mywebsite.com/blog/post-title? Identify opportunities to optimize for related keywords." |
-| `compare_search_periods`        | "Compare my site's performance between January and February. What queries improved the most, which declined, and what might explain these changes?" |
-| `get_advanced_search_analytics` | "Analyze my mobile search performance for queries with high impressions but positions below 10, and suggest content improvements to help them rank better." |
+| **工具名稱**                   | **範例提示**                                                                                 |
+|--------------------------------|---------------------------------------------------------------------------------------------|
+| `list_properties`              | 「列出我所有 GSC 資產，並告訴我哪些資產有最多已索引頁面。」                                |
+| `get_site_details`             | 「分析 mywebsite.com 的驗證狀態，並解釋所有權細節代表什麼意思。」                          |
+| `add_site`                     | 「將我的新網站 https://mywebsite.com 加入 Search Console 並驗證其狀態。」                   |
+| `delete_site`                  | 「從 Search Console 移除舊的測試網站 https://test.mywebsite.com。」                        |
+| `get_search_analytics`         | 「顯示 mywebsite.com 過去 30 天的前 20 個搜尋查詢，標出 CTR 低於 2% 的，並建議標題改進。」 |
+| `get_performance_overview`     | 「為 mywebsite.com 過去 28 天建立表現總覽圖，找出異常下跌或上升，並解釋可能原因。」         |
+| `check_indexing_issues`        | 「檢查這些重要頁面是否有索引問題，並依優先順序列出需立即處理的：mywebsite.com/product, mywebsite.com/services, mywebsite.com/about」 |
+| `inspect_url_enhanced`         | 「全面檢查 mywebsite.com/landing-page，並給我可行建議以改善其索引狀態。」                  |
+| `batch_url_inspection`         | 「檢查我前 5 個產品頁面，找出常見抓取或索引模式，並建議技術 SEO 改進。」                   |
+| `get_sitemaps`                 | 「列出 mywebsite.com 的所有網站地圖，找出有錯誤的，並建議後續步驟。」                      |
+| `list_sitemaps_enhanced`       | 「分析 mywebsite.com 的所有網站地圖，聚焦錯誤模式，並建立優先處理計畫。」                  |
+| `submit_sitemap`               | 「提交我的新產品網站地圖 https://mywebsite.com/product-sitemap.xml，並說明 Google 處理時間。」|
+| `get_sitemap_details`          | 「檢查 mywebsite.com/sitemap.xml 的狀態，並解釋警告對 SEO 的意義。」                      |
+| `get_search_by_page_query`     | 「哪些搜尋詞帶來流量到我的部落格文章 mywebsite.com/blog/post-title？找出可優化的相關關鍵字。」|
+| `compare_search_periods`       | 「比較我網站 1 月與 2 月的表現。哪些查詢成長最多，哪些下滑，可能原因是什麼？」             |
+| `get_advanced_search_analytics`| 「分析我的行動裝置搜尋表現，找出曝光高但排名低於 10 的查詢，並建議內容改進以提升排名。」   |
 
-You can also ask Claude to combine multiple tools and analyze the results. For example:
+你也可以請 Claude 結合多個工具並分析結果。例如：
 
-- "Find my top 20 landing pages by traffic, check their indexing status, and create a report highlighting any pages with both high traffic and indexing issues."
+- 「找出我前 20 個流量最高的登陸頁，檢查其索引狀態，並建立報告，標出同時有高流量與索引問題的頁面。」
+- 「分析我網站過去 90 天的表現趨勢，找出成長最快的查詢，並檢查對應登陸頁是否有技術問題。」
+- 「比較桌機與行動裝置搜尋表現，用圖表視覺化差異，並根據表現落差建議需行動優化的頁面。」
+- 「找出排名在第 2 頁（第 11-20 名）且曝光高但 CTR 低的查詢，檢查對應網址並建議標題與描述改進。」
 
-- "Analyze my site's performance trend over the last 90 days, identify my fastest-growing queries, and check if the corresponding landing pages have any technical issues."
-
-- "Compare my desktop vs. mobile search performance, visualize the differences with charts, and recommend specific pages that need mobile optimization based on performance gaps."
-
-- "Identify queries where I'm ranking on page 2 (positions 11-20) that have high impressions but low CTR, then inspect the corresponding URLs and suggest title and meta description improvements."
-
-Claude will use the GSC tools to fetch the data, present it in an easy-to-understand format, create visualizations when helpful, and provide actionable insights based on the results.
+Claude 會用 GSC 工具取得資料、易懂呈現、產生視覺化圖表，並根據結果給出可行建議。
 
 ---
 
-## Data Visualization Capabilities
+## 資料視覺化能力
 
-Claude can help you visualize your GSC data in various ways:
+Claude 可協助你用多種方式視覺化 GSC 數據：
 
-- **Trend Charts**: See how metrics change over time
-- **Comparison Graphs**: Compare different time periods or dimensions
-- **Performance Distributions**: Understand how your content performs across positions
-- **Correlation Analysis**: Identify relationships between different metrics
-- **Heatmaps**: Visualize complex datasets with color-coded representations
+- **趨勢圖**：查看指標隨時間變化
+- **比較圖**：比較不同時期或維度
+- **表現分布圖**：了解內容在各排名的表現
+- **相關性分析**：找出不同指標間的關聯
+- **熱力圖**：用色彩呈現複雜資料
 
-Simply ask Claude to "visualize" or "create a chart" when analyzing your data, and it will generate appropriate visualizations to help you understand the information better.
+分析數據時只要請 Claude「視覺化」或「建立圖表」，它會產生合適的圖表協助你理解資訊。
 
 ---
 
-## Troubleshooting
+## 疑難排解
 
-### Python Command Not Found
+### 找不到 Python 指令
 
-On macOS, the default Python command is often `python3` rather than `python`, which can cause issues with some applications including Node.js integrations.
+在 macOS 上，預設 Python 指令通常是 `python3` 而非 `python`，這可能導致部分應用（包含 Node.js 整合）出錯。
 
-If you encounter errors related to Python not being found, you can create an alias:
+若遇到 Python 找不到的錯誤，可建立別名：
 
-1. Create a Python alias (one-time setup):
+1. 建立 Python 別名（只需一次）：
    ```bash
-   # For macOS users:
+   # macOS 用戶：
    sudo ln -s $(which python3) /usr/local/bin/python
    
-   # If that doesn't work, try finding your Python installation:
+   # 若無效，嘗試尋找 Python 安裝路徑：
    sudo ln -s /Library/Frameworks/Python.framework/Versions/3.11/bin/python3 /usr/local/bin/python
    ```
 
-2. Verify the alias works:
+2. 驗證別名是否有效：
    ```bash
    python --version
    ```
 
-This creates a symbolic link so that when applications call `python`, they'll actually use your `python3` installation.
+這會建立符號連結，讓應用程式呼叫 `python` 時實際使用你的 `python3`。
 
-### Claude Configuration Issues
+### Claude 設定問題
 
-If you're having trouble connecting:
+若連線有困難：
 
-1. Make sure all file paths in your configuration are correct and use the full path
-2. Check that your service account has access to your GSC properties
-3. Restart Claude Desktop after making any changes
-4. Look for error messages in Claude's response when you try to use a tool
-5. Ensure your virtual environment is activated when running the server manually
+1. 確認所有設定檔路徑正確且為完整路徑
+2. 檢查服務帳號是否有存取 GSC 資產
+3. 重新啟動 Claude Desktop
+4. 嘗試使用工具時，查看 Claude 回應中的錯誤訊息
+5. 手動執行伺服器時，確認虛擬環境已啟動
 
-### Other Unexpected Issues
+### 其他異常問題
 
-If you encounter any other unexpected issues during installation or usage:
+若安裝或使用過程遇到其他異常：
 
-1. Copy the exact error message you're receiving
-2. Use ChatGPT or Claude and explain your problem in detail, including:
-   - What you were trying to do
-   - The exact error message
-   - Your operating system
-   - Any steps you've already tried
-3. AI assistants can often help diagnose and resolve technical issues by suggesting specific solutions for your situation
+1. 複製完整錯誤訊息
+2. 用 ChatGPT 或 Claude 詳細說明你的問題，包括：
+   - 你嘗試做什麼
+   - 完整錯誤訊息
+   - 作業系統
+   - 已嘗試的步驟
+3. AI 助手通常能根據你的情境協助診斷與解決技術問題
 
-Remember that most issues have been encountered by others before, and there's usually a straightforward solution available.
-
----
-
-## Contributing
-
-Found a bug or have an idea for improvement? We welcome your input! Open an issue or submit a pull request on GitHub.
+大多數問題都曾被他人遇過，通常都有簡單解法。
 
 ---
 
-## License
+## 貢獻
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+發現 bug 或有改進想法？歡迎在 GitHub 開 issue 或提交 pull request。
