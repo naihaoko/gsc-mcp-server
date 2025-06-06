@@ -1491,5 +1491,12 @@ async def get_current_server_time() -> str:
     return f"The current server date and time is: {datetime.now().strftime('%Y-%m-%d %H:%M:%S %Z')}"
 
 if __name__ == "__main__":
+    # Print server startup information
+    print("\n" + "="*50)
+    print("gsc-mcp-server is running")
+    print("Host: http://localhost:8000")
+    print("Status: Ready to accept commands")
+    print("="*50 + "\n")
+    
     # Start the MCP server on stdio transport
     mcp.run(transport="stdio")
